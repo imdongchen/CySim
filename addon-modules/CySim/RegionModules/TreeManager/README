@@ -1,0 +1,8 @@
+Clean trees order:
+	cysim clean
+If a specific region has been selected, then trees in that region are deleted, otherwise trees in all regions are deleted.
+
+Plant trees order:
+	cysim plant <shapefile_path> [sigma] [mu] [height_offset]
+Trees planted along a line or inside a polygon are positioned with a normal-distribution offset. mu refers to mean value of position offset and sigma refers to standard deviation which grows larger with more "dispersion". The default values for sigma and mu are 1 and 0 respectively.  
+height_offset is the ratio of offset againt original tree height, which ranges from 0 to 1. The default value is 0.2

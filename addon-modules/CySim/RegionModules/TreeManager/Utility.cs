@@ -5,6 +5,7 @@ using OpenMetaverse;
 using SharpMap.Geometries;
 using SharpMap.Data.Providers;
 using SharpMap.Data;
+using OpenSim.Framework.Console;
 
 namespace CySim.RegionModules.TreeManager
 {
@@ -25,6 +26,7 @@ namespace CySim.RegionModules.TreeManager
             }
             catch (Exception e)
             {
+                MainConsole.Instance.Output("Shapefile open failed!");
                 throw new Exception("ShapeFile not exists! " + e.Message + e.StackTrace);
             }
             shp.Open();
@@ -48,13 +50,20 @@ namespace CySim.RegionModules.TreeManager
             BoundingBox bbox = shp.GetExtents();
             shp.ExecuteIntersectionQuery(bbox, ds);
             FeatureDataTable table = ds.Tables[0] as FeatureDataTable;
-            foreach (FeatureDataRow row in table.Rows)
+            try
             {
-                features.Add(row.Geometry);
-                heights.Add(Convert.ToDouble(row["Height"]));
-                types.Add(Convert.ToInt32(row["Type"]));
-                if (flag != 0)
-                    intervals.Add(Convert.ToDouble(row["Interval"]));
+                foreach (FeatureDataRow row in table.Rows)
+                {
+                    features.Add(row.Geometry);
+                    heights.Add(Convert.ToDouble(row["Height"]));
+                    types.Add(Convert.ToInt32(row["Type"]));
+                    if (flag != 0)
+                        intervals.Add(Convert.ToDouble(row["Interval"]));
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Attribute in shapefile incorrect with " + e.Message + e.StackTrace);
             }
             
             shp.Close();
@@ -72,6 +81,8 @@ namespace CySim.RegionModules.TreeManager
         
         public static List<Point> RasterizeLine(LineString line, double interval)
         {
+            if (interval <= 0)
+                throw new Exception("Interval should be positive!");
             List<Point> result = new List<Point>();
             //distances[i] stores the distance from nodes[0] to nodes[i] along the line
             List<double> distances = new List<double>();
@@ -104,6 +115,8 @@ namespace CySim.RegionModules.TreeManager
 
         public static List<Point> RasterizeArea(Polygon polygon, double interval)
         {
+            if (interval <= 0)
+                throw new Exception("Interval should be positive!");
             List<Point> result = new List<Point>();
             BoundingBox bbox = polygon.GetBoundingBox();
             LinearRing exRing = polygon.ExteriorRing;

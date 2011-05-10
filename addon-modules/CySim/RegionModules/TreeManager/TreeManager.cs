@@ -107,7 +107,7 @@ namespace CySim.RegionModules.TreeManager
                         RemoveTrees((Scene)MainConsole.Instance.ConsoleScene);
                     break;
                 case "plant":
-                    if (cmd.Length < 3)
+                    if (cmd.Length < 3 || cmd.Length > 6)
                     {
                         MainConsole.Instance.Output("Syntax: cysim plant <shapefile>");
                         return false;
@@ -115,7 +115,28 @@ namespace CySim.RegionModules.TreeManager
                     
                     try
                     {
-                        PlantTrees(cmd[2]);
+                        double sigma = 1;
+                        double mu = 0;
+                        double heightOffset = 0.2;
+                        switch (cmd.Length)
+                        {
+                            case 6:
+                                heightOffset = Convert.ToDouble(cmd[5]);
+                                if (heightOffset > 1 || heightOffset < 0)
+                                    throw new Exception("HeightOffset is the ratio of offset against original height, and should range from 0 to 1");
+                                goto case 5;
+                            case 5:
+                                mu = Convert.ToDouble(cmd[4]);
+                                goto case 4;
+                            case 4:
+                                sigma = Convert.ToDouble(cmd[3]);
+                                if (sigma <= 0)
+                                    throw new Exception("Sigma should be positive!");
+                                break;
+                            default:
+                                break;
+                        }
+                        PlantTrees(cmd[2], sigma, mu, heightOffset);
                     }
                     catch (Exception e)
                     {
@@ -143,7 +164,7 @@ namespace CySim.RegionModules.TreeManager
             }
         }
 
-        private void PlantTrees(string shapefile)
+        private void PlantTrees(string shapefile, double sigma, double mu, double heightOffset)
         {
             List<Geometry> features;
             List<int> types;
@@ -160,7 +181,7 @@ namespace CySim.RegionModules.TreeManager
                     {
                         Point p = features[i] as Point;
                         Vector2 newPoint = new Vector2((float)p.X, (float)p.Y);
-                        heights[i] += Util.RandomClass.Next((int)(heights[i] * 0.2));
+                        heights[i] += Util.RandomClass.Next((int)(heights[i] * heightOffset));
                         AddTree(heights[i], newPoint, types[i]);
                     }
                     break;
@@ -172,9 +193,9 @@ namespace CySim.RegionModules.TreeManager
                         foreach (Point p in pointList)
                         {
                             Vector2 newPoint = new Vector2();
-                            newPoint.X = (float)(p.X + Util.RandomClass.Next(1));
-                            newPoint.Y = (float)(p.Y + Util.RandomClass.Next(1));
-                            heights[i] += Util.RandomClass.Next((int)(heights[i] * 0.2));
+                            newPoint.X = (float)(p.X + Utility.NormalDistribute(mu, sigma));
+                            newPoint.Y = (float)(p.Y + Utility.NormalDistribute(mu, sigma));
+                            heights[i] += Util.RandomClass.Next((int)(heights[i] * heightOffset));
                             AddTree(heights[i], newPoint, types[i]);
                         }
                     }
@@ -187,9 +208,9 @@ namespace CySim.RegionModules.TreeManager
                         foreach (Point p in pointList)
                         {
                             Vector2 newPoint = new Vector2();
-                            newPoint.X = (float)(p.X + Util.RandomClass.Next(1));
-                            newPoint.Y = (float)(p.Y + Util.RandomClass.Next(1));
-                            heights[i] += Util.RandomClass.Next((int)(heights[i] * 0.2));
+                            newPoint.X = (float)(p.X + Utility.NormalDistribute(mu, sigma));
+                            newPoint.Y = (float)(p.Y + Utility.NormalDistribute(mu, sigma));
+                            heights[i] += Util.RandomClass.Next((int)(heights[i] * heightOffset) + 1);
                             AddTree(heights[i], newPoint, types[i]);
                         }
                     }
@@ -201,6 +222,8 @@ namespace CySim.RegionModules.TreeManager
 
         private void AddTree(double height, Vector2 pos, int treeType)
         {
+            if (height <= 0)
+                throw new Exception("Tree height should be positive!");
             int x = (int)pos.X / 256;
             int y = (int)pos.Y / 256;
             foreach (Scene scene in m_SceneList)
