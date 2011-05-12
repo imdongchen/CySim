@@ -98,13 +98,21 @@ namespace CySim.RegionModules.TreeManager
             switch (cmd[1])
             {
                 case "clean":
-                    if (MainConsole.Instance.ConsoleScene == null)
+                    try
                     {
-                        foreach (Scene scene in m_SceneList)
-                            RemoveTrees(scene);
+                        if (MainConsole.Instance.ConsoleScene == null)
+                        {
+                            foreach (Scene scene in m_SceneList)
+                                RemoveTrees(scene);
+                        }
+                        else
+                            RemoveTrees((Scene)MainConsole.Instance.ConsoleScene);
                     }
-                    else
-                        RemoveTrees((Scene)MainConsole.Instance.ConsoleScene);
+                    catch (Exception e)
+                    {
+                        m_log.Error("Remove trees failed with " + e.Message + e.StackTrace);
+                    }
+                    m_log.Info("Remove trees successfully!");
                     break;
                 case "plant":
                     if (cmd.Length < 3 || cmd.Length > 6)
@@ -142,8 +150,10 @@ namespace CySim.RegionModules.TreeManager
                     {
                         m_log.ErrorFormat("Plant trees failed with {0} {1}", e.Message, e.StackTrace);
                     }
+                    m_log.Info("Plant trees successfullly!");
                     break;
                 default:
+                    m_log.Error("Command not supported");
                     return false;
             }
             return true;
