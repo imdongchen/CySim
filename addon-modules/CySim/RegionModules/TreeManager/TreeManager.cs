@@ -39,10 +39,10 @@ namespace CySim.RegionModules.TreeManager
 
         public void Initialise(IConfigSource source)
         {
-            Command treeCleanCommand =
-                new Command("clean", CommandIntentions.COMMAND_HAZARDOUS, CleanAllTrees, "remove all trees on the selected region");
+            Command treeCommand =
+                new Command("cysim_tree", CommandIntentions.COMMAND_HAZARDOUS, CleanAllTrees, "tree operation");
 
-            m_commander.RegisterCommand("clean", treeCleanCommand);
+            m_commander.RegisterCommand("cysim_tree", treeCommand);
             m_log.Info("Tree Manager module is initialised.");
             MainConsole.Instance.Commands.AddCommand("cysim_tree",
                 true,

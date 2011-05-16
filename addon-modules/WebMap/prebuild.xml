@@ -1,0 +1,37 @@
+<Project frameworkVersion="v3_5" name="OpenSim.ApplicationPlugins.WebMap" path="addon-modules/WebMap/WebMap" type="Library">  
+  <Configuration name="Debug"> 
+   <Options> 
+       <OutputPath>../../../bin/</OutputPath> 
+   </Options> 
+  </Configuration> 
+  <Configuration name="Release"> 
+   <Options> 
+       <OutputPath>../../../bin/</OutputPath> 
+   </Options> 
+  </Configuration> 
+  
+  <ReferencePath>../../../bin/</ReferencePath> 
+  <Reference name="System"/> 
+  <Reference name="System.Xml"/> 
+  <Reference name="OpenMetaverseTypes.dll" /> 
+  <Reference name="Nini.dll" /> 
+  <Reference name="OpenSim"/> 
+  <Reference name="OpenSim.Framework"/> 
+  <Reference name="log4net.dll"/> 
+  <Reference name="Mono.Addins.dll" />
+  <Reference name="OpenSim.Framework.Servers"/>
+  <Reference name="OpenSim.Region.Framework"/>
+  <Reference name="OpenSim.Region.ClientStack"/>
+  <Reference name="MapRendererCL.dll"/>
+  <Reference name="System.Drawing"/>
+  <Reference name="MySql.Data"/>
+  <Reference name="FreeImageNET.dll"/>
+  <Reference name="OpenSim.Framework.Servers.HttpServer"/>
+  <Reference name="OpenSim.Services.Interfaces"/>
+  <Reference name="System.Data.SQLite"/>
+
+  <Files> 
+   <Match pattern="*.cs" recurse="true"/> 
+   <Match pattern="*.addin.xml" path="Resources" buildAction="EmbeddedResource" recurse="true"/> 
+  </Files> 
+ </Project> 

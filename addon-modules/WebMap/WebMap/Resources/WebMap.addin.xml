@@ -1,0 +1,11 @@
+<Addin id="OpenSim.ApplicationPlugins.WebMap" version="0.1"> 
+ <Runtime> 
+   <Import assembly="OpenSim.ApplicationPlugins.WebMap.dll"/> 
+ </Runtime> 
+ <Dependencies> 
+   <Addin id="OpenSim" version="0.5" /> 
+ </Dependencies> 
+ <Extension path = "/OpenSim/Startup"> 
+   <Plugin id="WebMap" type="OpenSim.ApplicationPlugins.WebMap.WebMap"/> 
+ </Extension> 
+</Addin> 

@@ -1,0 +1,8 @@
+*.ncb
+*.exp
+*.pdb
+*.user
+*.obj
+*.idb
+*.suo
+*.suo.old

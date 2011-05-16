@@ -70,4 +70,13 @@ TAGS
 Makefile.local
 bin/.version
 compile.bat
-
+bin/*.ilk
+bin/*.exp
+bin/*.lib
+bin/scenedata/*
+bin/mapcache/*
+bin/texcache/*
+bin/*.pdb
+bin/Robust.log
+bin/j2kDecodeCache/*
+bin/FlotsamAssetCache/*
