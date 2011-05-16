@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WFS_Capabilities xmlns="http://www.opengis.net/wfs" version="1.0.0">
+<Service>
+   <Name>OGC:WFS</Name>
+   <Title>OpenSim MapService</Title>
+   <Abstract>
+       Web feature service for avatars
+   </Abstract>
+   <OnlineResource>
+      http://localhost:8003/map?
+   </OnlineResource>
+</Service>
+
+<Capability>
+ <Request>
+   <GetCapabilities>
+    <DCPType>
+      <HTTP>
+        <Get onlineResource="http://localhost:8003/map?"/>
+        <Post onlineResource="http://localhost:8003/map?"/>
+      </HTTP>
+    </DCPType>
+   </GetCapabilities>
+   <DescribeFeatureType>
+      <SchemaDescriptionLanguage>
+          <XMLSCHEMA/>
+      </SchemaDescriptionLanguage>
+      <DCPType>
+         <HTTP>
+         <Get onlineResource="http://localhost:8003/map?"/>
+         <Post onlineResource="http://localhost:8003/map?"/>
+       </HTTP>
+      </DCPType>
+   </DescribeFeatureType>
+   <GetFeature>
+      <ResultFormat>
+        <GML2/>
+      </ResultFormat>
+      <DCPType>
+        <HTTP>
+          <Get onlineResource="http://localhost:8003/map?"/>
+          <Post onlineResource="http://localhost:8003/map?"/>
+        </HTTP>
+      </DCPType>
+   </GetFeature>
+ </Request>
+</Capability>
+<FeatureTypeList>
+ <FeatureType>
+    <Name>agent</Name>
+    <Title>agent</Title>
+    <Abstract>
+A Feature that has coordinate
+information of avatars.
+    </Abstract>
+    <Keywords>OpenSim,Avatars,WFS</Keywords>
+    <SRS>null</SRS>
+    <Operations>
+       <Query/>
+       <Update/>
+    </Operations>
+    <LatLongBoundingBox
+minx="256000"
+miny="256000"
+maxx="256512"
+maxy="256512"/>
+    <MetadataURL>http://localhost:8003/map</MetadataURL>
+ </FeatureType>
+</FeatureTypeList>
+  <Filter_Capabilities>
+    <Spatial_Capabilities>
+      <Spatial_Operators>
+        <BBOX/>
+      </Spatial_Operators>
+    </Spatial_Capabilities>
+    <Scalar_Capabilities>
+      <Arithmetic_Operators>
+        <Simple_Arithmetic/>
+      </Arithmetic_Operators>
+    </Scalar_Capabilities>
+  </Filter_Capabilities>
+</WFS_Capabilities>

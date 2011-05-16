@@ -80,3 +80,4 @@ bin/*.pdb
 bin/Robust.log
 bin/j2kDecodeCache/*
 bin/FlotsamAssetCache/*
+bin/shapefile/*
