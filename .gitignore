@@ -27,7 +27,6 @@ bin/Debug/*.dll
 bin/*.dll.mdb
 bin/*.db
 bin/addin-db-*
-bin/*.dll
 bin/OpenSim.vshost.exe.config
 bin/ScriptEngines/*-*-*-*-*
 bin/ScriptEngines/*.dll
@@ -35,7 +34,6 @@ bin/ScriptEngines/*/*.dll
 bin/ScriptEngines/*/*.state
 bin/*.maddin
 bin/*.exe
-bin/*.ini
 bin/j2kDecodeCache
 bin/Physics*
 bin/Terrain*
