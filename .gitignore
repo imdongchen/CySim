@@ -9,7 +9,6 @@
 *.pdb
 *.pidb
 *.dll.build
-*.dll
 *.VisualState.xml
 */*/obj
 */*/*/obj
