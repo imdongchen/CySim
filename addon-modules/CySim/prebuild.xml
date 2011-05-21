@@ -22,6 +22,9 @@
     <Reference name="OpenSim.Region.CoreModules"/>
     <Reference name="OpenSim.Region.Framework"/>
     <Reference name="OpenSim.Services.Interfaces"/>
+	<Reference name="SharpMap.dll"/>
+	<Reference name="System.Data"/>
+	<Reference name="System.XML"/>
     <Files>
         <Match pattern="*.cs" recurse="true">
         </Match>

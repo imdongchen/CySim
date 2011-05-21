@@ -23,7 +23,7 @@ namespace OpenSim.Services.WebMapService
 
         public WebMapService(IConfigSource config)            
         {
-            m_log.DebugFormat("[Web Map SERVICE]: Starting...");
+            m_log.DebugFormat("[WebMapSERVICE]: Starting...");
 
             m_config = config;
             IConfig webMapConfig = config.Configs["WebMapService"];
@@ -94,7 +94,7 @@ namespace OpenSim.Services.WebMapService
             //if failed, create a blank image.
             catch (Exception e)
             {
-                m_log.Error("can't connect to " + uri + e.Message + e.StackTrace);
+                m_log.Error("[WebMapService]: can't connect to " + uri + e.Message + e.StackTrace);
                 regionMap = CreatePlainImage(picSize);
             }
             return regionMap;
@@ -117,7 +117,7 @@ namespace OpenSim.Services.WebMapService
             }
             catch (Exception e)
             {
-                m_log.Error("[WebMap]: Request parameters invalid!");
+                m_log.Error("[WebMapService]: Request parameters invalid!");
             }
         }
 

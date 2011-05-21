@@ -17,7 +17,8 @@ bool MapRenderer::MapRender(
 	clock_t begin, end;
 
 	begin = clock();
-	InitD3D(&Device, width, height, Windowed);
+	if (!InitD3D(&Device, width, height, Windowed))
+		return false;
 	Prim* prims = new Prim[primNum * 6];
 
 	logFile("primitive number: ");
@@ -90,8 +91,8 @@ bool MapRenderer::InitD3D(IDirect3DDevice9** device, const int width, const int 
 
 	if(!d3d9)
 	{
-		logFile("Create D3D failed");
-		return 0;
+		logFile("Create D3D failed\n");
+		return false;
 	}
 
 	D3DCAPS9 caps;

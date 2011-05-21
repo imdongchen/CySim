@@ -75,6 +75,30 @@ namespace OpenSim.Server.Handlers.Map
                     }
                     break;
                 case "WFS":
+                    if (httpRequest.QueryString["REQUEST"] == "DescribeFeatureType")
+                    {
+                        httpResponse.StatusCode = (int)HttpStatusCode.OK;
+                        httpResponse.ContentType = "text/xml";
+                        TextReader textReader = new StreamReader("FeatureType.xsd");
+                        result = textReader.ReadToEnd();
+                        textReader.Close();
+                    }
+                    else if (httpRequest.QueryString["REQUEST"] == "GetFeature")
+                    {
+                        if ((httpRequest.QueryString["TYPENAME"] == "avatar"))
+                        {
+                            string str = httpRequest.QueryString["BBOX"];
+                        }
+                    }
+                    else if (httpRequest.QueryString["REQUEST"] == "GetCapabilities")
+                    {
+                        httpResponse.StatusCode = (int)HttpStatusCode.OK;
+                        httpResponse.ContentType = "text/xml";
+                        TextReader textReader = new StreamReader("WFS_Capabilities.xml");
+                        result = textReader.ReadToEnd();
+                        textReader.Close();
+                    }
+                   
                     break;
                 default:
                     httpResponse.StatusCode = (int)HttpStatusCode.ServiceUnavailable;

@@ -12,7 +12,7 @@ using log4net;
 
 namespace OpenSim.ApplicationPlugins.WebMap.Layer
 {
-    public class PrimLayer 
+    public class PrimLayer : IDisposable
     {
         private List<PrimitiveCL> m_primList;
         private Scene m_scene;
@@ -78,18 +78,31 @@ namespace OpenSim.ApplicationPlugins.WebMap.Layer
                                 List<SimpleColorCL> colors = new List<SimpleColorCL>();
                                 for (uint j = 0; j < facenum; j++)
                                 {
+                                    if (shape.Textures.GetFace(j) == null)
+                                    {
+                                        colors.Add(new SimpleColorCL(255, 255, 0, 0));
+                                        continue;
+                                    }
                                     TextureColorModel data = Utility.GetDataFromFile(m_texPath, shape.Textures.GetFace(j).TextureID.ToString());
                                     colors.Add(new SimpleColorCL(255, data.R, data.G, data.B));
                                 }
 
                                 m_primList.Add(new PrimitiveCL(volumeParams, position, rotation, scale, colors.ToArray(), facenum));
+                                position.Release();
+                                rotation.Release();
+                                scale.Release();
+                                pathParams.Release();
+                                profileParams.Release();
+                                volumeParams.Release();
+                                foreach (SimpleColorCL sc in colors)
+                                    sc.Release();
                             }
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    m_log.ErrorFormat("[WebMapService]: Initialize object layer failed with {0} {1}", e.Message, e.StackTrace);
+                    m_log.ErrorFormat("[WebMap]: Initialize object layer failed with {0} {1}", e.Message, e.StackTrace);
                 }
             }                        
         }
@@ -107,6 +120,7 @@ namespace OpenSim.ApplicationPlugins.WebMap.Layer
                 {
                     Bitmap map = new Bitmap(picSize.Width, picSize.Height);
                     map.Save(cachePath);
+                    map.Dispose();
                 }
                 else
                 {
@@ -119,7 +133,7 @@ namespace OpenSim.ApplicationPlugins.WebMap.Layer
             }
             catch (Exception e)
             {
-                m_log.Error("Render prim layer failed with " + e.Message + e.StackTrace);
+                m_log.Error("[WebMap]: Render prim layer failed with " + e.Message + e.StackTrace);
             }
         }
 
@@ -132,5 +146,15 @@ namespace OpenSim.ApplicationPlugins.WebMap.Layer
             BBox picSize = new BBox(0, 0, (int)(256 * scale), (int)(256 * scale));
             Render(regionRange, picSize, cachePath);
         }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            foreach (PrimitiveCL p in m_primList)
+                p.Release();
+        }
+
+        #endregion
     }
 }

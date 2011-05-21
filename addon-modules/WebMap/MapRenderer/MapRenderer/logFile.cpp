@@ -3,7 +3,7 @@
 void logFile(char *logInfo)
 {
 	FILE *file;
-	file = fopen("e:\\log.txt", "a");
+	file = fopen("map.log", "a");
 	if (file != NULL)
 	{
 		fprintf(file, logInfo);
@@ -14,7 +14,7 @@ void logFile(char *logInfo)
 void logFile(long n)
 {
 	FILE *file;
-	file = fopen("e:\\log.txt", "a");
+	file = fopen("map.log", "a");
 	if (file != NULL)
 	{
 		char str[20];

@@ -1,0 +1,53 @@
+种树模块
+    新增的assembly：
+        Cysim.RegionModules.TreeManager.dll
+        SharpMap.dll
+        ProjNET.dll
+        BruTile.dll
+
+    标准：
+    Console命令：
+        cysim_tree clean
+        若当前region为root，则删除世界内所有的树；否则，删除当前region内所有的树。
+
+        cysim_tree plant <shapefile_path> [sigma] [mu] [ratio]
+        shapefile_path是shapefile的路径；
+        igma和mu是影响水平位置偏移量的两个变量。随机偏移量符合正态分布，mu是平均偏移量，sigma衡量随机数的分散程度，值越大越分散。sigma默认值为1，mu默认值为0.
+        ratio是影响高度偏移量的变量，取值为（0，1），指树木的高度会在原高的这个比例内随机浮动。ratio默认值为0.2。
+   
+    Shapefile属性表：
+        点要素
+            Type (int), 树种
+            Height (real), 树高
+        线、面要素
+            Type (int)
+            Height (real)
+            Interval (real), 两棵树的水平间距
+        (以上字段注意大小写！)
+
+地图模块 
+    新增的assembly：
+        OpenSim.ApplicationPlugins.WebMap.dll
+        MapRenderer.dll
+        MapRendererCL.dll
+        FreeImage.dll
+        FreeImageNET.dll
+        OpenSim.Services.WebMapService.dll
+    修改的assembly:
+        OpenSim.Server.Handlers
+        OpenSim.Service.Interfaces
+    新增的配置文件：
+        WebMap.ini
+    修改的配置文件：
+        Robust.ini
+        [StartUp]中加上8003/OpenSim.Server.Handlers.dll:WebMapServiceConnector
+        和
+        [WebMapService]
+	LocalServiceModule = "OpenSim.Services.WebMapService.dll:WebMapService"
+	GridServiceModule = "OpenSim.Services.GridService.dll:GridService"
+
+    新增的命令：
+        cysim_map update map
+        立即更新地图缓存
+        cysim_map update texture
+        立即更新纹理

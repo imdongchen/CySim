@@ -9,7 +9,7 @@ using namespace System;
 
 
 namespace MapRendererCL {
-	public ref class LLProfileParamsCL
+	public ref class LLProfileParamsCL 
 	{
 	private:
 		LLProfileParams* mProfileParams;
@@ -31,6 +31,14 @@ namespace MapRendererCL {
 		{
 			return *mProfileParams;
 		}
+		void Release()
+		{
+			if (mProfileParams)
+			{
+				delete mProfileParams;
+				mProfileParams = NULL;
+			}
+		}
 	};
 
 	public ref class LLPathParamsCL
@@ -46,6 +54,14 @@ namespace MapRendererCL {
 		LLPathParams getPathParams()
 		{
 			return *mPathParams;
+		}
+		void Release()
+		{
+			if (mPathParams)
+			{
+				delete mPathParams;
+				mPathParams = NULL;
+			}
 		}
 	};
 
@@ -68,6 +84,14 @@ namespace MapRendererCL {
 		{
 			return *mVector3;
 		}
+		void Release()
+		{
+			if (mVector3)
+			{
+				delete mVector3; 
+				mVector3 = NULL;
+			}
+		}
 	};
 
 	public ref class LLQuaternionCL
@@ -82,9 +106,17 @@ namespace MapRendererCL {
 		{
 			return *mQuaternion;
 		}
+		void Release()
+		{
+			if (mQuaternion)
+			{
+				delete mQuaternion; 
+				mQuaternion = NULL;
+			}
+		}
 	};
 
-	public ref class LLUUIDCL
+	public ref class LLUUIDCL 
 	{
 	private:
 		LLUUID* uuid;
@@ -108,16 +140,31 @@ namespace MapRendererCL {
 		{
 			return *uuid;
 		}	
+		void Release()
+		{
+			if (uuid)
+			{
+				delete uuid;
+				uuid = NULL;
+			}
+		}
 	};
 
-	public ref class SimpleColorCL
+	public ref class SimpleColorCL 
 	{
 	private:
 		SimpleColor* scolor;
 	public:
 		SimpleColorCL(byte a, byte r, byte g, byte b) : scolor(new SimpleColor(a, r, g, b)) {}
 		SimpleColorCL() : scolor(new SimpleColor()) {}
-		~SimpleColorCL()	{ delete scolor; scolor = NULL;}
+		~SimpleColorCL()	
+		{
+			if (scolor)
+			{
+				delete scolor; 
+				scolor = NULL;
+			}
+		}
 		SimpleColor getColor()
 		{
 			return *scolor;
@@ -138,6 +185,14 @@ namespace MapRendererCL {
 		{
 			return scolor->G;
 		}
+		void Release()
+		{
+			if (scolor)
+			{
+				delete scolor; 
+				scolor = NULL;
+			}
+		}
 	};
 
 	public ref class LLVolumeParamsCL
@@ -153,10 +208,25 @@ namespace MapRendererCL {
 			
 			volumeParams = new LLVolumeParams(prop, pap);
 		}
-		~LLVolumeParamsCL()	{ delete volumeParams; volumeParams = NULL; }
+		~LLVolumeParamsCL()	
+		{
+			if (volumeParams)
+			{
+				delete volumeParams; 
+				volumeParams = NULL; 
+			}
+		}
 		LLVolumeParams getVolumeParams()
 		{
 			return *volumeParams;
+		}
+		void Release()
+		{
+			if (volumeParams)
+			{
+				delete volumeParams; 
+				volumeParams = NULL; 
+			}
 		}
 	};
 
@@ -180,21 +250,31 @@ namespace MapRendererCL {
 			return prim;
 		}
 
-		bool isPrimitiveNull()
+		void Release()
 		{
-			return prim == NULL;
+			if (prim)
+			{
+				delete prim;
+				prim = NULL;
+			}
 		}
-
 	};
 
-	public ref class MapRenderCL
+	public ref class MapRenderCL 
 	{
 	private:
 		MapRenderer *mr;
 
 	public:
 		MapRenderCL(): mr(new MapRenderer())	{}
-		~MapRenderCL()	{ delete mr; mr = NULL; }
+		~MapRenderCL()	
+		{ 
+			if (mr)
+			{
+				delete mr;
+				mr = NULL; 
+			}
+		}
 
 		bool mapRender(
 			float minX, float minY, float minZ, float maxX, float maxY, float maxZ,			
@@ -207,6 +287,13 @@ namespace MapRendererCL {
 		{
 			return *mr;
 		}
-		
+		void Release()
+		{
+			if (mr)
+			{
+				delete mr;
+				mr = NULL; 
+			}
+		}
 	};
 }

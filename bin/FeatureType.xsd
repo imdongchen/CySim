@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://www.esri.com/esri" xmlns:esri="http://www.esri.com/esri" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" elementFormDefault="qualified" version="0.1">
+  <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://anakin/wfsconnector/schema/gml/2.1.2/feature.xsd"/>
+
+  <xsd:complexType name="agent_Type">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string"/>
+          <xsd:element ref="gml:pointProperty"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:element name="agent" type="esri:agent_Type" substitutionGroup="gml:_Feature"/>
+</xsd:schema>

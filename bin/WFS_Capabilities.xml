@@ -47,8 +47,8 @@
 </Capability>
 <FeatureTypeList>
  <FeatureType>
-    <Name>agent</Name>
-    <Title>agent</Title>
+    <Name>avatar</Name>
+    <Title>avatar</Title>
     <Abstract>
 A Feature that has coordinate
 information of avatars.

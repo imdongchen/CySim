@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="llcommon.lib MapRenderer.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\debug;E:\Code\opensim\bin"
+				AdditionalLibraryDirectories="..\debug;..\..\..\..\bin"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"

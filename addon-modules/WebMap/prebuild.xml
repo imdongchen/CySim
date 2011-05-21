@@ -29,7 +29,12 @@
   <Reference name="OpenSim.Framework.Servers.HttpServer"/>
   <Reference name="OpenSim.Services.Interfaces"/>
   <Reference name="System.Data.SQLite"/>
-
+  <Reference name="System.Data"/>
+  <Reference name="OpenSim.Region.CoreModules"/>
+  <Reference name="OpenSim.Framework.Console"/>
+  <Reference name="System.Data"/>
+  <Reference name="OpenMetaverse.dll"/>
+  
   <Files> 
    <Match pattern="*.cs" recurse="true"/> 
    <Match pattern="*.addin.xml" path="Resources" buildAction="EmbeddedResource" recurse="true"/> 

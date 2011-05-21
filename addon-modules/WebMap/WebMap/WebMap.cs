@@ -68,7 +68,6 @@ namespace OpenSim.ApplicationPlugins.WebMap
 
         public void Initialise(OpenSimBase openSim)
         {
-            m_log.Info("[WebMap]: initialized!");
             m_openSim = openSim;
             m_server = openSim.HttpServer;
             m_sceneList = m_openSim.SceneManager.Scenes;
@@ -105,6 +104,7 @@ namespace OpenSim.ApplicationPlugins.WebMap
                 "cysim_map",
                 "map cache and texture update",
                 HandleMapCommand);
+            m_log.Info("[WebMap]: initialized!");
         }
 
         public void PostInitialise()
@@ -158,7 +158,9 @@ namespace OpenSim.ApplicationPlugins.WebMap
                         getWMSParams(httpRequest, out layers, out format, out range, out picSize);
                         Bitmap map = getMap(layers, range, picSize);
                         httpResponse.ContentType = "image/png";
-                        return Utility.ConvertToString(map);
+                        string rel = Utility.ConvertToString(map);
+                        map.Dispose();
+                        return rel;
                     }
                     else if (httpRequest.QueryString["REQUEST"] == "GetCapabilities")
                     {
@@ -219,6 +221,11 @@ namespace OpenSim.ApplicationPlugins.WebMap
                     m_terrainLayer = new TerrainLayer(scene);
                     layerImgs.Add(m_terrainLayer.Render(range, picSize));
                 }
+                if (layers[i] == "avatar")
+                {
+                    m_avatarLayer = new AvatarLayer(scene);
+                    layerImgs.Add(m_avatarLayer.Render(range, picSize));
+                }
                 if (layers[i] == "prim")
                 {
                     float scale = getScale(range, picSize);
@@ -237,6 +244,7 @@ namespace OpenSim.ApplicationPlugins.WebMap
                     }
                     BBox srcSize = getCutSize(cache, scene, range);
                     layerImgs.Add(Utility.CutImage(cache, srcSize, picSize));
+                    cache.Dispose();
                 }
             }
             Bitmap map = null;
@@ -251,6 +259,8 @@ namespace OpenSim.ApplicationPlugins.WebMap
                     map = overlayImages(picSize, layerImgs);
                     break;
             }
+            foreach (Bitmap bmp in layerImgs)
+                bmp.Dispose();
             return map;
         }
 
@@ -333,12 +343,12 @@ namespace OpenSim.ApplicationPlugins.WebMap
                 List<TextureColorModel> data = Utility.GetDataFromMysql();
                 Utility.DisconnectMysql();
                 Utility.StoreDataIntoFiles(data, m_texPath);
+                m_log.Debug("[WebMap]: Successfully got all remote texture data");
             }
             catch (Exception e)
             {
                 m_log.ErrorFormat("[WebMap]: Get texture data failed with {0} {1}", e.Message, e.StackTrace);
             }
-            m_log.Debug("[WebMap]: Successfully got all remote texture data");
         }
 
         private void makeCacheThread()

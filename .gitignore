@@ -32,7 +32,6 @@ bin/ScriptEngines/*.dll
 bin/ScriptEngines/*/*.dll
 bin/ScriptEngines/*/*.state
 bin/*.maddin
-bin/*.exe
 bin/j2kDecodeCache
 bin/Physics*
 bin/Terrain*

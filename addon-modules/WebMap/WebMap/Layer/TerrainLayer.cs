@@ -73,7 +73,7 @@ namespace OpenSim.ApplicationPlugins.WebMap.Layer
             }
             catch
             {
-                m_log.Error("Render terrain layer failed: can't find defaultstripe.png!");
+                m_log.Error("[WebMap]: Render terrain layer failed: can't find defaultstripe.png!");
             }
             int pallete = gradientmapLd.Height;
             Color[] colors = new Color[pallete];

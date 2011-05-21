@@ -54,6 +54,13 @@ namespace OpenSim.ApplicationPlugins.WebMap
             c = (int)(a & 0x00000000FFFFFFFF);
         }
 
+        public static PointF Projection(ref PointF agentPos, ref BBoxF bbox, BBox picSize)
+        {
+            PointF result = new PointF();
+            result.X = (agentPos.X - bbox.MinX) * picSize.Width / bbox.Width;
+            result.Y = picSize.Height - (agentPos.Y - bbox.MinY) * picSize.Height / bbox.Height;
+            return result;
+        }
         public static void StoreDataIntoFiles(List<TextureColorModel> data, string filePath)
         {
             if (!Directory.Exists(filePath))

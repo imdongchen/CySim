@@ -1,0 +1,139 @@
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+  <head> 
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" /> 
+    <meta name="apple-mobile-web-app-capable" content="yes" /> 
+      <title>VCUHK</title> 
+    <link rel="stylesheet" href="theme/default/style.css" type="text/css" /> 
+    <link rel="stylesheet" href="style.css" type="text/css" /> 
+    <style>
+        #map{
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+        }
+
+    </style>
+    <script src="OpenLayers.js"></script>
+    <!--<script src="http://openlayers.org/api/OpenLayers.js"></script> -->
+    <script type="text/javascript"> 
+        var map, base, POI;
+ 
+        OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {                
+            defaultHandlerOptions: {
+                'single': true,
+                'double': false,
+                'pixelTolerance': 0,
+                'stopSingle': false,
+                'stopDouble': false
+            },
+
+            initialize: function(options) {
+                this.handlerOptions = OpenLayers.Util.extend(
+                    {}, this.defaultHandlerOptions
+                );
+                OpenLayers.Control.prototype.initialize.apply(
+                    this, arguments
+                ); 
+                this.handler = new OpenLayers.Handler.Click(
+                    this, {
+                        'click': this.trigger
+                    }, this.handlerOptions
+                );
+            }, 
+
+            trigger: function(e) {
+                var lonlat = map.getLonLatFromViewPortPx(e.xy);
+                popup(lonlat);
+            }
+
+        });
+
+        var AutoSizeFramedCloud = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
+            'autoSize': true
+        });
+
+        function popup(lonlat){
+            var feature = new OpenLayers.Feature(POI, lonlat);
+            feature.closeBox = true;
+            feature.popupClass = AutoSizeFramedCloud;
+            feature.data.popupContentHTML = '<a href="vcuhk:">Teleport!</a>';
+            feature.data.overflow = "auto";
+
+            feature.popup = feature.createPopup(feature.closeBox);
+            map.addPopup(feature.popup, true);
+            feature.popup.show();
+            currentPopup = feature.popup;
+        }
+
+        function popup2(){
+            var feature = getFeatureByValue(document.getElementById("search").input.value);
+            feature.closeBox = true;
+            feature.popupClass = AutoSizeFramedCloud;
+            feature.data.popupContentHTML = '<a href="vcuhk:">Teleport!</a>';
+            feature.data.overflow = "auto";
+
+            feature.popup = feature.createPopup(feature.closeBox);
+            map.addPopup(feature.popup, true);
+            feature.popup.show();
+            currentPopup = feature.popup;   
+        }
+
+        function getFeatureByValue(value){
+            var features = POI.features;
+            for (var i = 0; i < features.length; i++){
+                var feature = features[i];
+                if (feature.attributes["id"] == value){
+                    alert("get it");
+                    return feature;
+                }
+            }
+            alert("Not found!");
+            return;
+        }
+ 
+        function init(){
+            var options = {
+               maxExtent: new OpenLayers.Bounds(256000, 256000, 257280, 257280)
+            };
+            map = new OpenLayers.Map('map', options);
+            base = new OpenLayers.Layer.WMS( "Base Map",
+                    "http://localhost:8003/map", {
+                    layers: 'terrain,prim,avatar',
+                    format: 'image/png'
+                        } );
+            map.addLayer(base);
+            map.zoomToMaxExtent();
+
+            //var lon = 256100;
+            //var lat = 256100;
+            //var zoom = 1;
+            //map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
+
+            map.addControl(new OpenLayers.Control.LayerSwitcher());
+            var click = new OpenLayers.Control.Click();
+            map.addControl(click);
+            click.activate();
+            map.addControl(new OpenLayers.Control.MousePosition());
+            
+            //hack Z coord?
+            map.events.register("mousemove", map, function(e){
+                        var position = this.events.getMosuePosition(e);
+                        OpenLayers.Util.getElements("coords").innerHTML = position;
+                        }
+                    );
+
+        }
+
+   </script> 
+  </head> 
+  <body onload="init()"> 
+      <h1 id="title">VCUHK Map</h1> 
+ 
+      <div id="tags"> 
+        Map
+      </div> 
+ 
+    <div id="map"></div> 
+ 
+  </body> 
+</html> 

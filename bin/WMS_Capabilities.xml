@@ -63,6 +63,13 @@
     <SRS>EPSG:900913</SRS>
     <LatLonBoundingBox minx="256000" miny="256000" maxx="256512" maxy="256512" />
   </Layer>
-
+  <Layer>
+    <Name>avatar</Name>
+    <Title>OpenSim avatar layer</Title>
+    <SRS>EPSG:4269</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:900913</SRS>
+    <LatLonBoundingBox minx="256000" miny="256000" maxx="256512" maxy="256512" />
+  </Layer>
 </Capability>
 </WMT_MS_Capabilities>
